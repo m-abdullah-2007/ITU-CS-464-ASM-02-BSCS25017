@@ -47,11 +47,15 @@ public class PlayerController : MonoBehaviour
 
         if (body != null)
             bodyRestScale = body.localScale;
+
     }
 
     private void Start()
     {
         cam = Camera.main.transform;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -127,6 +131,17 @@ public class PlayerController : MonoBehaviour
             // Use up both windows.
             lastGroundedTime = float.NegativeInfinity;
             lastPressedTime = float.NegativeInfinity;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 
