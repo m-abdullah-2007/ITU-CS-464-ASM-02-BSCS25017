@@ -8,7 +8,7 @@
 
 ## Tuning
 
-Values below combine script defaults with saved scene overrides. Gravity is **9.81 m/s²**.
+Gravity is **9.81 m/s²**.
 
 | Setting | BlockOut1: arena | BlockOut2: maze | BloCkOut3: training | Why this value matters |
 |---|---:|---:|---:|---|
