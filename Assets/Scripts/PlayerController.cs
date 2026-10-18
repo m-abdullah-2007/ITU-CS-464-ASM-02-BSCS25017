@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         if (jumpPressed)
         {
             lastPressedTime = Time.time;
-            Debug.Log("Space pressed!");
+            Debug.Log("Space pressed. Grounded: " + isGrounded);
         }
 
         bool canJump =
