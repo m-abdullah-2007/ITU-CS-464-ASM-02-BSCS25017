@@ -346,6 +346,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 311165932812445509, guid: 0e5d127f3015cd640be210a48735b5a2, type: 3}
+      propertyPath: m_Name
+      value: Zipline_Stand (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1075738741542884683, guid: 0e5d127f3015cd640be210a48735b5a2, type: 3}
+      propertyPath: m_Name
+      value: Zipline_Stand
+      objectReference: {fileID: 0}
     - target: {fileID: 5700861499360293619, guid: 0e5d127f3015cd640be210a48735b5a2, type: 3}
       propertyPath: m_Name
       value: Endless_Runner_Map_Parkour_Rooftops
