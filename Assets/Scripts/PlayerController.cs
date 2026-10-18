@@ -116,7 +116,10 @@ public class PlayerController : MonoBehaviour
 
         // Remember when Space was pressed.
         if (jumpPressed)
+        {
             lastPressedTime = Time.time;
+            Debug.Log("Space pressed!");
+        }
 
         bool canJump =
             Time.time - lastGroundedTime <= coyoteTime;
@@ -156,7 +159,6 @@ public class PlayerController : MonoBehaviour
 
         if (jumpQueued)
         {
-            Debug.Log("Space pressed!");
             // Reset vertical velocity so falling does not shorten the jump.
             Vector3 velocity = rb.linearVelocity;
             velocity.y = 0f;
