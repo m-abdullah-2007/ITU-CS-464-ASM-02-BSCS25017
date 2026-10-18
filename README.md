@@ -12,14 +12,14 @@ Gravity is **9.81 m/s²**.
 
 | Setting | BlockOut1: arena | BlockOut2: maze | BloCkOut3: training | Why this value matters |
 |---|---:|---:|---:|---|
-| Speed | 5 m/s | 5 m/s | 5 m/s | Keeps traversal speed consistent; at full input, 1 m takes 0.20 s. |
-| Jump height | 2.0 m | 0.9 m | 1.8 m | Gives the arena the largest vertical reach, the maze a lower hop, and the training course an intermediate jump. |
-| Time to apex | 0.639 s | 0.428 s | 0.606 s | Follows from height and gravity; the maze jump reaches its apex sooner. |
-| Fall multiplier | 2.2× | 2.0× | 2.2× | Reduces descent duration to about 67% or 71% of the corresponding normal-gravity descent, without changing the intended ascent. |
-| Coyote time | 0.10 s | 0.10 s | 0.10 s | At 5 m/s, permits a press approximately 0.50 m after leaving an edge. |
-| Jump buffer | 0.12 s | 0.12 s | 0.12 s | Retains a press for about 7.2 rendered frames at 60 fps, allowing slightly early landing inputs. |
+| Speed | 5 m/s | 5 m/s | 5 m/s | Keeps movement fast but easy to control. |
+| Jump height | 2.0 m | 0.9 m | 1.8 m | Gives enough height to cross gaps without making jumps too easy. |
+| Time to apex | 0.639 s | 0.428 s | 0.606 s | A 1.8 m jump takes about 0.6 seconds to reach its peak. |
+| Fall multiplier | 2.2× | 2.0× | 2.2× | Makes the player fall faster and makes jumps feel more responsive. |
+| Coyote time | 0.10 s | 0.10 s | 0.10 s | Gives players a little room for timing mistakes. |
+| Jump buffer | 0.12 s | 0.12 s | 0.12 s | Helps the player jump immediately after touching the ground. |
 | Camera smoothing (`smoothTime`) | 0.50 s | 0.30 s | 0.20 s | The arena uses a more gradual response; the training course catches up more quickly. |
-| Look-ahead | 0.10 s | 0.35 s | 0.20 s | Predicts 0.50 m, 1.75 m and 1.00 m ahead respectively at full horizontal speed. |
+| Look-ahead | 0.10 s | 0.35 s | 0.20 s | Keeps the player visible while showing some of the path ahead. |
 
 ## Four answers
 
