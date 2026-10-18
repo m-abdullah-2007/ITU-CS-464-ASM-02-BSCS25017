@@ -1,89 +1,60 @@
-# CS464 Assignment 01 · Muhammad Abdullah · BSCS25017
+# CS464 Assignment 02 · Muhammad Abdullah · BSCS25017
 
-## Game 1 · 8 Ball Pool
+- **Video:** [ADD VIDEO LINK — 30–90 seconds, all five levels]
+- **Input:** Legacy Input with Active Input Handling set to Both.
+- **Ground check:** CheckSphere at Feet on the Ground layer, with a visible gizmo.
+- **Camera:** CameraFollow in LateUpdate, using SmoothDamp and velocity-based look-ahead.
+- **Juice:** Landing squash using an OutBack curve and a coroutine, triggered after more than 0.1 seconds airborne.
 
-- **Store link:** https://play.google.com/store/apps/details?id=com.miniclip.eightballpool
-- **Genre:** Sports / Pool
-- **I played:** ~40 minutes
+## Tuning
 
-<p>
-<img src="DOCS/game1/1.jpeg" width="240">
-<img src="DOCS/game1/2.jpeg" width="240">
-<img src="DOCS/game1/3.jpeg" width="240">
-</p>
+Gravity is **9.81 m/s²**.
 
-1. **M1, M2** · Cue power and spin adjustment
-2. **M3, M4** · Shot angle and black ball outcome
-3. **M5, M6, M7** · Cue-ball foul, ball colour and rail contact
+| Setting | BlockOut1: arena | BlockOut2: maze | BloCkOut3: training | Why this value matters |
+|---|---:|---:|---:|---|
+| Speed | 5 m/s | 5 m/s | 5 m/s | Keeps movement fast but easy to control. |
+| Jump height | 2.0 m | 0.9 m | 1.8 m | Gives enough height to cross gaps without making jumps too easy. |
+| Time to apex | 0.639 s | 0.428 s | 0.606 s | A 1.8 m jump takes about 0.6 seconds to reach its peak. |
+| Fall multiplier | 2.2× | 2.0× | 2.2× | Makes the player fall faster and makes jumps feel more responsive. |
+| Coyote time | 0.10 s | 0.10 s | 0.10 s | Gives players a little room for timing mistakes. |
+| Jump buffer | 0.12 s | 0.12 s | 0.12 s | Helps the player jump immediately after touching the ground. |
+| Camera smoothing (`smoothTime`) | 0.50 s | 0.30 s | 0.20 s | The arena uses a more gradual response; the training course catches up more quickly. |
+| Look-ahead | 0.10 s | 0.35 s | 0.20 s | Keeps the player visible while showing some of the path ahead. |
 
-| # | Mechanic | Dynamic | Aesthetic | Bartle type |
-|---|---|---|---|---|
-| M1 | Adjust cue power before a shot. | Players vary power based on distance and shot position. | Challenge | Achiever |
-| M2 | Adjust cue-ball spin. | Players use spin to control the cue ball after contact. | Challenge | Achiever |
-| M3 | Adjust the shot angle. | Players aim and correct angles to reach the pocket. | Challenge | Achiever |
-| M4 | Potting the black ball decides the outcome. | Players choose when to attempt the final ball based on risk. | Challenge | Achiever |
-| M5 | Potting the cue ball causes a foul. | Players avoid shots that could pocket the cue ball. | Challenge | Achiever |
-| M6 | First successful pot assigns solids or stripes. | Players adapt their strategy to their assigned ball group. | Challenge | Achiever |
-| M7 | A legal shot must pot a ball or contact a rail. | Players plan shots to satisfy the rail or potting requirement. | Challenge | Achiever |
+## Four answers
 
-**Aesthetic profile:** Challenge — precise aiming and shot planning. Expression — players use different aiming, power and spin techniques. Discovery — players learn how shot combinations behave.
+### 1. The jump, in numbers
 
-**Player types**
-- **Primary:** Achiever (Acting × World), because players work toward winning and completing the game objectives.
-- **Secondary:** Killer (Acting × Players), because matches involve directly competing against another player.
+With gravity `g = 9.81 m/s²` and mass `m = 1 kg`, launch speed is `sqrt(2gh)` and jump impulse is `m × launch speed`. Time to apex is `launch speed / g`; fall time is `sqrt(2h / (g × fallMultiplier))`. Horizontal reach is `speed × total airtime`.
 
----
+| Level | Launch speed | Jump impulse | Time to apex | Fall time | Ideal reach |
+|---|---:|---:|---:|---:|---:|
+| Arena | 6.264 m/s | 6.264 N·s | 0.639 s | 0.431 s | 5.345 m |
+| Maze | 4.202 m/s | 4.202 N·s | 0.428 s | 0.303 s | 3.656 m |
+| Training | 5.943 m/s | 5.943 N·s | 0.606 s | 0.408 s | 5.071 m |
 
-## Game 2 · Jetpack Joyride
+These estimates assume full horizontal speed and landing at the take-off height. Physics steps and input ramp-up affect actual clearance.
 
-- **Store link:** https://play.google.com/store/apps/details?id=com.halfbrick.jetpackjoyride
-- **Genre:** Action / Endless Runner
-- **I played:** 1+ hour
+**Widest-gap comparison:** The widest required gap is **2 m** in maze. The arena, maze and training jumps have ideal reaches of **5.345 m**, **3.656 m** and **5.071 m**, respectively, all exceeding 2 m. These estimates support clearing the gap at full speed when the landing is at the take-off height.
 
-<p>
-<img src="DOCS/game2/image3_gravity.jpeg" width="240">
-<img src="DOCS/game2/image2_jetpack.jpeg" width="240">
-<img src="DOCS/game2/image1_gadget.jpeg" width="240">
-</p>
+### 2. Update and FixedUpdate
 
-1. **M1, M2** · Jetpack control and gravity
-2. **M3, M4** · Coins and hazards
-3. **M5, M6, M7** · Machine parts, distance and gadgets
+`Update` reads input, builds camera-relative movement, checks grounding, updates coyote/buffer timestamps, queues jumps and starts landing squash. `FixedUpdate` sets horizontal velocity while preserving Y, applies a queued jump once and adds falling gravity.
 
-| # | Mechanic | Dynamic | Aesthetic | Bartle type |
-|---|---|---|---|---|
-| M1 | Touch activates the jetpack. | Players tap and release to control vertical movement. | Challenge | Achiever |
-| M2 | Gravity pulls the player downward. | Players time jetpack use to maintain a safe height. | Challenge | Achiever |
-| M3 | Coins are placed along the route. | Players change their path to collect coins. | Challenge | Achiever |
-| M4 | Obstacles, lasers and missiles cause danger. | Players change position and timing to avoid hazards. | Challenge | Achiever |
-| M5 | SAM machine parts can be collected. | Players move toward parts while managing hazards. | Discovery | Explorer |
-| M6 | Distance is measured in metres. | Players try to survive longer and beat their distance record. | Challenge | Achiever |
-| M7 | Gears unlock gadgets. | Players collect gears to access different equipment. | Discovery | Explorer |
+Reading a one-frame press only in `FixedUpdate` can miss input. Applying repeated forces in `Update` makes their application depend on render frequency. Velocity is already in metres per second, so it is not multiplied by `deltaTime`.
 
-**Aesthetic profile:** Challenge — avoiding hazards and surviving longer. Discovery — finding collectibles and equipment. Expression — using different gadgets and gameplay options.
+### 3. Vector3.Dot
 
-**Player types**
-- **Primary:** Achiever (Acting × World), because players try to survive longer, collect items and improve their score.
-- **Secondary:** Explorer (Interacting × World), because players discover collectibles, gadgets and different gameplay possibilities.
+The controller currently uses CheckSphere.
 
----
+### 4. The juice
 
-## 🎮 Proposed Game Blockouts
+Landing squash uses `EaseOutBack` for **0.20 seconds**, approximately **12 frames at 60 fps**, providing brief landing feedback. Body height becomes 0.7 of its resting height; width and depth become approximately 1.195 to preserve volume. `LerpUnclamped` retains the curve's overshoot, and the coroutine ends at the exact resting scale. Only Body scales, so the collider stays unchanged.
 
-### 1. Tilt Maze Ball
+## Levels
 
-A physics-based maze where the player tilts a platform to guide a ball through obstacles toward the goal.
-
-<img src="DOCS/Level_BlockOuts/3.png" width="240">
-
-### 2. FPS Training Arena
-
-A first-person shooting arena designed for target practice, movement, cover and obstacles.
-
-<img src="DOCS/Level_BlockOuts/2.png" width="240">
-
-### 3. Rooftop Parkour × Endless Runner
-
-A fast-paced rooftop parkour game where the player runs across buildings, jumps gaps and avoids obstacles.
-
-<img src="DOCS/Level_BlockOuts/1.png" width="240">
+| Level | What the controller must do there | What changed for this jump |
+|---|---|---|
+| Level01 — BlockOut1 (arena) | Navigate cover and obstacles along the arena route. | Jump height: 2 m.
+| Level02 — BlockOut2 (maze) | Traverse ramps and narrow passages toward the exit. | Jump height: 0.9 m; fall multiplier: 2.0.
+| Level03 — BloCkOut3 (training) | Navigate stairs, cover and elevated sections toward the finish. | Jump height: 1.8 m; fall multiplier: 2.2.
