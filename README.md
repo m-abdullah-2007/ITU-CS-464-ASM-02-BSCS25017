@@ -1,6 +1,6 @@
 # CS464 Assignment 02 · Muhammad Abdullah · BSCS25017
 
-- **Video:** [ADD VIDEO LINK — 30–90 seconds, all five levels]
+- **Video:** https://drive.google.com/file/d/10hJGrjb7Yb51Stri3ljFarEZVKw3o5Z8/view?usp=sharing
 - **Input:** Legacy Input with Active Input Handling set to Both.
 - **Ground check:** CheckSphere at Feet on the Ground layer, with a visible gizmo.
 - **Camera:** CameraFollow in LateUpdate, using SmoothDamp and velocity-based look-ahead.
